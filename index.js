@@ -21,7 +21,9 @@ app.use(passport.initialize());
 // Import and use your user authentication routes
 const userRoutes = require('./routes/user');
 app.use('/user', userRoutes);
-
+// Use the Products route
+const productsRoutes = require('./routes/products');
+app.use('/products', productsRoutes);
 
 
 
