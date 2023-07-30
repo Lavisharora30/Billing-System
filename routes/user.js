@@ -1,14 +1,14 @@
+// routes/user.js
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-
 const User = require('../models/user');
 
 // Route for user registration
 router.post('/register', async (req, res) => {
     try {
-        const { username, password } = req.body;
+        const { username, password, isAdmin } = req.body; // Include isAdmin in the request body
 
         // Check if the user already exists
         const existingUser = await User.findOne({ username });
@@ -20,7 +20,7 @@ router.post('/register', async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, 10);
 
         // Create a new user
-        const newUser = new User({ username, password: hashedPassword });
+        const newUser = new User({ username, password: hashedPassword, isAdmin }); // Set isAdmin value based on the request body
         await newUser.save();
 
         return res.status(201).json({ message: 'User registered successfully' });
@@ -52,5 +52,4 @@ router.post('/login', async (req, res) => {
         return res.status(500).json({ message: 'Internal Server Error' });
     }
 });
-
 module.exports = router;
