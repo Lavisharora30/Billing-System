@@ -7,7 +7,7 @@ const mongoose = require('mongoose');
 const app = express();
 
 // Connect to your database (e.g., MongoDB)
-mongoose.connect('mongodb+srv://lavisharora3019:shub1997@cluster0.bhjwzoy.mongodb.net/?retryWrites=true&w=majority', {
+mongoose.connect('mongodb+srv://lavisharora:lavi2002@bill.lusnpxd.mongodb.net/?retryWrites=true&w=majority', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 });
@@ -30,7 +30,7 @@ app.use('/orders', ordersRoutes);
 
 
 // Start the server
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
     console.log(`Server started on http://localhost:${PORT}`);
 });
