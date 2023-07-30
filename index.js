@@ -15,6 +15,14 @@ mongoose.connect('mongodb+srv://lavisharora3019:shub1997@cluster0.bhjwzoy.mongod
 // Middleware for parsing JSON data
 app.use(express.json());
 
+// Initialize Passport
+app.use(passport.initialize());
+
+// Import and use your user authentication routes
+const userRoutes = require('./routes/user');
+app.use('/user', userRoutes);
+
+
 
 
 // Start the server
