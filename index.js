@@ -24,7 +24,9 @@ app.use('/user', userRoutes);
 // Use the Products route
 const productsRoutes = require('./routes/products');
 app.use('/products', productsRoutes);
-
+//Use the Order route
+const ordersRoutes = require('./routes/orders');
+app.use('/orders', ordersRoutes);
 
 
 // Start the server
