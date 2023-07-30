@@ -37,4 +37,56 @@ router.post('/products', async (req, res) => {
     }
 });
 
+// Route to fetch a specific product by ID
+router.get('/products/:productId', async (req, res) => {
+    try {
+        const { productId } = req.params;
+        const product = await Product.findById(productId);
+        if (!product) {
+            return res.status(404).json({ message: 'Product not found' });
+        }
+        return res.status(200).json({ product });
+    } catch (error) {
+        return res.status(500).json({ message: 'Internal Server Error' });
+    }
+});
+
+// Route to update a product by ID
+router.patch('/products/:productId', async (req, res) => {
+    try {
+        const { productId } = req.params;
+        const { price } = req.body;
+
+        const updatedProduct = await Product.findByIdAndUpdate(
+            productId,
+            { price },
+            { new: true }
+        );
+
+        if (!updatedProduct) {
+            return res.status(404).json({ message: 'Product not found' });
+        }
+
+        return res.status(200).json({ message: 'Product updated successfully', product: updatedProduct });
+    } catch (error) {
+        return res.status(500).json({ message: 'Internal Server Error' });
+    }
+});
+
+// Route to delete a product by ID
+router.delete('/products/:productId', async (req, res) => {
+    try {
+        const { productId } = req.params;
+        const deletedProduct = await Product.findByIdAndDelete(productId);
+
+        if (!deletedProduct) {
+            return res.status(404).json({ message: 'Product not found' });
+        }
+
+        return res.status(200).json({ message: 'Product deleted successfully' });
+    } catch (error) {
+        return res.status(500).json({ message: 'Internal Server Error' });
+    }
+});
+
 module.exports = router;
