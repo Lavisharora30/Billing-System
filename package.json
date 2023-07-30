@@ -1,0 +1,20 @@
+{
+  "name": "plotline_assignment",
+  "version": "1.0.0",
+  "description": "Problem statement An online billing system is essential for businesses to manage their invoicing, payments, and financial transactions efficiently. Your task is to develop a Node.js server for a billing system that provides seamless functionality and a user-friendly experience.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.1",
+    "mongoose": "^7.4.1",
+    "passport": "^0.6.0",
+    "passport-local": "^1.0.0"
+  }
+}
