@@ -2,7 +2,6 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
 
 const User = require('../models/user');
 const Order = require('../models/order');
@@ -24,11 +23,6 @@ router.post('/login', async (req, res) => {
         if (!user.isAdmin) {
             return res.status(403).json({ message: 'Access denied: Not an admin' });
         }
-
-        // Generate a JSON Web Token (JWT) upon successful login
-        const token = jwt.sign({ userId: user._id, isAdmin: true }, 'your-secret-key', {
-            expiresIn: '1h', // Token expiration time (you can customize this)
-        });
 
         // Fetch all orders from the database
         const orders = await Order.find();
