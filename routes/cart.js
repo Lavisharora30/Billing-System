@@ -115,49 +115,109 @@ router.get('/total-bill/:userId', async (req, res) => {
             return res.status(404).json({ message: 'Cart not found' });
         }
 
-        const totalBill = {
-            items: [],
-            totalValue: 0,
-        };
+        let cartPrice = 0;
 
-        // Calculate total value of selected items
-        for (const item of cart.items) {
-            const product = item.product;
-            const price = product.price;
-            const quantity = item.quantity;
+        // Calculate tax and total value for each item in the cart
+        const itemsWithBillDetails = cart.items.map((item) => {
+            let totalPrice = 0;
+            let taxPercentage = 0;
+            let flatTax = 0;
 
-            let tax = 0;
-            if (product.type === 'product') {
-                if (price > 1000 && price <= 5000) {
-                    tax = price * 0.12;
-                } else if (price > 5000) {
-                    tax = price * 0.18;
+            if (item.product.type === 'product') {
+                flatTax = 200;
+
+                if (item.product.price > 1000 && item.product.price <= 5000) {
+                    taxPercentage = 0.12;
+                    const taxAmount = item.product.price * taxPercentage;
+                    const totalValue = item.product.price + taxAmount + flatTax;
+                    cartPrice += totalValue;
+                    return {
+                        item: item.product,
+                        price: item.product.price,
+                        quantity: item.quantity,
+                        PA: taxAmount,
+                        PC: flatTax,
+                        totalValue: totalValue,
+                    };
+                } else if (item.product.price > 5000) {
+                    taxPercentage = 0.18;
+                    const taxAmount = item.product.price * taxPercentage;
+                    const totalValue = item.product.price + taxAmount + flatTax;
+                    cartPrice += totalValue;
+                    return {
+                        item: item.product,
+                        price: item.product.price,
+                        quantity: item.quantity,
+                        PB: taxAmount,
+                        PC: flatTax,
+                        totalValue: totalValue,
+                    };
+                } else {
+                    taxPercentage = 0;
+                    const taxAmount = item.product.price * taxPercentage;
+                    const totalValue = item.product.price + taxAmount + flatTax;
+                    cartPrice += totalValue;
+                    return {
+                        item: item.product,
+                        price: item.product.price,
+                        quantity: item.quantity,
+                        PC: flatTax,
+                        totalValue: totalValue,
+                    };
                 }
-            } else if (product.type === 'service') {
-                if (price > 1000 && price <= 8000) {
-                    tax = price * 0.1;
-                } else if (price > 8000) {
-                    tax = price * 0.15;
+            } else if (item.product.type === 'service') {
+                flatTax = 100;
+                if (item.product.price > 1000 && item.product.price <= 8000) {
+                    taxPercentage = 0.1;
+                    const taxAmount = item.product.price * taxPercentage;
+                    const totalValue = item.product.price + taxAmount + flatTax;
+                    cartPrice += totalValue;
+                    return {
+                        item: item.product,
+                        price: item.product.price,
+                        quantity: item.quantity,
+                        SA: taxAmount,
+                        SC: flatTax,
+                        totalValue: totalValue,
+                    };
+                } else if (item.product.price > 8000) {
+                    taxPercentage = 0.15;
+                    const taxAmount = item.product.price * taxPercentage;
+                    const totalValue = item.product.price + taxAmount + flatTax;
+                    cartPrice += totalValue;
+                    return {
+                        item: item.product,
+                        price: item.product.price,
+                        quantity: item.quantity,
+                        SB: taxAmount,
+                        SC: flatTax,
+                        totalValue: totalValue,
+                    };
+                } else {
+                    taxPercentage = 0;
+                    const taxAmount = item.product.price * taxPercentage;
+                    const totalValue = item.product.price + taxAmount + flatTax;
+                    cartPrice += totalValue;
+                    return {
+                        item: item.product,
+                        price: item.product.price,
+                        quantity: item.quantity,
+                        SC: flatTax,
+                        totalValue: totalValue,
+                    };
                 }
             }
+        });
 
-            const totalItemValue = price * quantity + tax;
-
-            totalBill.items.push({
-                product: product.name,
-                price,
-                quantity,
-                tax,
-                totalItemValue,
-            });
-
-            totalBill.totalValue += totalItemValue;
-        }
-
-        return res.status(200).json(totalBill);
+        return res.status(200).json({
+            items: itemsWithBillDetails,
+            CartPrice: cartPrice,
+        });
     } catch (error) {
-        return res.status(500).json({ message: 'Internal Server Error' });
+        console.error(error);
+        return res.status(500).json({ error: 'Internal server error' });
     }
 });
+
 
 module.exports = router;
