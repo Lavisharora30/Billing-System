@@ -1,6 +1,6 @@
+//index.js
 const express = require('express');
 const passport = require('passport');
-const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const mongoose = require('mongoose');
 const app = express();
